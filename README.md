@@ -1,2 +1,2 @@
-# ruby-rspec-test
-Ruby Rspec test
+# ruby-internal-challenge
+Ruby internal challenge
