@@ -4,6 +4,9 @@ Welcome to the Ruby Rspec test
 # Requirements
 - Write the unit tests for the Order class and make sure the test code coverage is 100% for all of the classes: Order, OrderItem, User
 
+  <img width="1442" alt="Screenshot 2023-05-23 at 21 40 46" src="https://github.com/moneyforwardvietnam/ruby-internal-challenge/assets/48194234/3a7aca2a-eac5-4460-88c5-f6aa51da84a2">
+
+
 # How to join the test?
 - Clone the repository
 - Create a new folder with your nickname in the `/day-1` and copy all files & folders in `/day-1/demo` to your folder
