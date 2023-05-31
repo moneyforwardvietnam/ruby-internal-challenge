@@ -4,24 +4,22 @@ require "order_item"
 require "user"
 
 RSpec.describe Order do
-  
-  let(:name) { 'mark' }
-  let(:phone) { '081333555' }
-  let(:user) { User.new(name: name, phone: phone) }
+ 
+  include_context 'user'
   let(:order_item_1) { OrderItem.new(product: 'noddle', price: 1.3, discount: 0.0) }
   let(:order_item_2) { OrderItem.new(product: 'rice', price: 2.5, discount: 0.2) }
   let(:items) { [order_item_1, order_item_2] }
 
   describe 'create a new order' do
     context 'with user and items' do
-      let(:order) { Order.new(user: user, items: items) }
+      let(:order) { Order.new(user: shared_user, items: items) }
 
       before { order }
 
       it 'should have correct user' do
-        expect(order.user).to eq(user)
-        expect(order.user.name).to eq(user.name)
-        expect(order.user.phone).to eq(user.phone)
+        expect(order.user).to eq(shared_user)
+        expect(order.user.name).to eq(shared_user.name)
+        expect(order.user.phone).to eq(shared_user.phone)
       end
 
       it 'should have correct order items' do
@@ -71,7 +69,7 @@ RSpec.describe Order do
   end
 
   describe "#add_item" do
-    let(:order) { Order.new(user: user, items: []) }
+    let(:order) { Order.new(user: shared_user, items: []) }
 
     before { order.add_item(order_item_1) }
    
@@ -91,7 +89,7 @@ RSpec.describe Order do
     let(:membership_discount) { price * (Order::MEMBERSHIP_DISCOUNT_PERCENT / 100.0) }
 
     context 'with items' do
-      let(:order) { Order.new(user: user, items: items) }
+      let(:order) { Order.new(user: shared_user, items: items) }
 
       before { order.calc_price! }
 
@@ -107,7 +105,7 @@ RSpec.describe Order do
     end
     
     context 'without items' do
-      let(:order) { Order.new(user: user, items: []) }
+      let(:order) { Order.new(user: shared_user, items: []) }
 
       before { order.calc_price! }
 
