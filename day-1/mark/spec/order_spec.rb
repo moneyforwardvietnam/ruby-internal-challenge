@@ -6,13 +6,11 @@ require "user"
 RSpec.describe Order do
  
   include_context 'user'
-  let(:order_item_1) { OrderItem.new(product: 'noddle', price: 1.3, discount: 0.0) }
-  let(:order_item_2) { OrderItem.new(product: 'rice', price: 2.5, discount: 0.2) }
-  let(:items) { [order_item_1, order_item_2] }
+  include_context 'order_items'
 
   describe 'create a new order' do
     context 'with user and items' do
-      let(:order) { Order.new(user: shared_user, items: items) }
+      let(:order) { Order.new(user: shared_user, items: shared_order_items) }
 
       before { order }
 
@@ -22,10 +20,13 @@ RSpec.describe Order do
         expect(order.user.phone).to eq(shared_user.phone)
       end
 
+      it 'should have correct number of order items' do
+        expect(order.items.count).to eq(shared_order_items.count)
+      end
+
       it 'should have correct order items' do
-        expect(order.items.count).to eq(items.count)
-        expect(order.items).to include(items.first)
-        expect(order.items).to include(items.last)
+        expect(order.items).to include(shared_order_items.first)
+        expect(order.items).to include(shared_order_items.last)
       end
 
       it 'should have initial price equals 0.0' do
@@ -71,10 +72,10 @@ RSpec.describe Order do
   describe "#add_item" do
     let(:order) { Order.new(user: shared_user, items: []) }
 
-    before { order.add_item(order_item_1) }
+    before { order.add_item(shared_order_items.first) }
    
     it 'should add correct item into the order' do
-      expect(order.items).to include(order_item_1)
+      expect(order.items).to include(shared_order_items.first)
     end
 
     it 'should have correct number of item added' do
@@ -83,23 +84,18 @@ RSpec.describe Order do
   end
 
   describe "#calc_price!" do
-    let(:price) { items.sum(&:price) }
-    let(:discount) { items.sum(&:discount) }
-    let(:final_price) { items.sum(&:final_price) }
-    let(:membership_discount) { price * (Order::MEMBERSHIP_DISCOUNT_PERCENT / 100.0) }
-
     context 'with items' do
-      let(:order) { Order.new(user: shared_user, items: items) }
+      let(:order) { Order.new(user: shared_user, items: shared_order_items) }
 
       before { order.calc_price! }
 
       it 'should update correct discount for order' do
-        updated_discount = discount + membership_discount
+        updated_discount = shared_order_items_discount + shared_order_items_membership_discount
         expect(order.discount).to eq(updated_discount)
       end
 
       it 'should update correct final price for order' do
-        updated_final_price = final_price - membership_discount
+        updated_final_price = shared_order_items_final_price - shared_order_items_membership_discount
         expect(order.final_price).to eq(updated_final_price)
       end
     end
@@ -119,16 +115,16 @@ RSpec.describe Order do
     end
 
     context 'without user' do
-      let(:order) { Order.new(user: nil, items: items) }
+      let(:order) { Order.new(user: nil, items: shared_order_items) }
 
       before { order.calc_price! }
 
       it 'should return correct discount' do
-        expect(order.discount).to eq(discount)
+        expect(order.discount).to eq(shared_order_items_discount)
       end
 
       it 'should return correct final price' do
-        expect(order.final_price).to eq(final_price)
+        expect(order.final_price).to eq(shared_order_items_final_price)
       end
     end
   end
