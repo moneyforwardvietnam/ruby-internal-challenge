@@ -3,18 +3,18 @@ require "order_item"
 
 RSpec.describe OrderItem do
 
-  let(:product) { 'milk' }
+  include_context 'product'
   let(:price) { 4.25 }
   let(:discount) { 1.30 }
 
   describe 'create new order item' do
     context 'with product, price, and discount' do
-      let(:order_item) { OrderItem.new(product: product, price: price, discount: discount) }
+      let(:order_item) { OrderItem.new(product: shared_product, price: price, discount: discount) }
       
       before { order_item }
 
       it 'should have correct product' do
-        expect(order_item.product).to eq(product)
+        expect(order_item.product).to eq(shared_product)
       end
 
       it 'should have correct price amount' do
@@ -63,7 +63,7 @@ RSpec.describe OrderItem do
 
   describe '#final_price' do
     context 'item price is zero' do
-      let(:order_item) { OrderItem.new(product: product, price: 0.0, discount: discount) }
+      let(:order_item) { OrderItem.new(product: shared_product, price: 0.0, discount: discount) }
       
       before { order_item }
 
@@ -77,7 +77,7 @@ RSpec.describe OrderItem do
     end
 
     context 'item price is not zero' do
-      let(:order_item) { OrderItem.new(product: product, price: price, discount: discount) }
+      let(:order_item) { OrderItem.new(product: shared_product, price: price, discount: discount) }
 
       before { order_item }
 
