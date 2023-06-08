@@ -14,7 +14,7 @@ RSpec.describe Order do
     let(:items) { [item_1] }
     let(:order) { Order.new user: user, items: items }
 
-    it_behaves_like "check init items"
+    it_behaves_like "check items in order"
 
     it "should add right items" do
       order.add_item item_2
@@ -34,12 +34,12 @@ RSpec.describe Order do
           discount: 0.0
         }
       }
-      it_behaves_like "check init items"
+      it_behaves_like "check items in order"
       it_behaves_like "check result after run calc_price"
     end
 
     context "with user is nil" do
-      let(:items) { [item_1, item_2] }
+      let(:items) { [item_1, item_2, item_3] }
       let(:order) { Order.new user: nil, items: items }
       let(:results) {
         {
@@ -49,11 +49,11 @@ RSpec.describe Order do
         }
       }
 
-      it_behaves_like "check init items"
+      it_behaves_like "check items in order"
       it_behaves_like "check result after run calc_price"
     end
 
-    context "with user is nil" do
+    context "with user is not nil and items is not empty" do
       let(:items) { [item_1, item_2, item_3] }
       let(:order) { Order.new user: user, items: items }
       let(:results) {
@@ -64,7 +64,7 @@ RSpec.describe Order do
         }
       }
       
-      it_behaves_like "check init items"
+      it_behaves_like "check items in order"
       it_behaves_like "check result after run calc_price"
     end
 

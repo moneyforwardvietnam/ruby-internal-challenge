@@ -1,6 +1,10 @@
-shared_examples "check init items" do
-  it "should init right items size" do
+shared_examples "check items in order" do
+  it "should return right items size" do
     expect(order.items.size).to eq items.size
+  end
+
+  it "should return right items" do
+    expect(order.items).to eq items
   end
 end
 
