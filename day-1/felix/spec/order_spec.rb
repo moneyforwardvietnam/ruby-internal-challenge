@@ -12,10 +12,12 @@ RSpec.describe Order do
   let(:order) { Order.new(user: user, items: items) }
 
   describe "#add_item" do
-    it "adds an item to the order" do
-      item = double("OrderItem")
-      order.add_item(item)
-      expect(order.items).to include(item)
+    context "When we don't have any items in the order, then we add an item" do
+      let(:item_with_nil_price) { OrderItem.new(product: "voucher2") }
+
+      before { order.add_item(item_with_nil_price) }
+
+      it { expect(order.items).to include(item_with_nil_price) }
     end
   end
 
